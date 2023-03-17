@@ -19,9 +19,7 @@ export default function SessionsPage() {
     if (movie === undefined) {
         return <PageContainer>Carregando...</PageContainer>
     }
-
-    console.log(movie)
-
+    
     return (
         <PageContainer>
             Selecione o horário

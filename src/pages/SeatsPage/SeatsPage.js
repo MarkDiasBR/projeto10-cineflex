@@ -1,19 +1,34 @@
 import { PageContainer, SeatsContainer, CaptionContainer, CaptionItem, CaptionCircle, FormContainer } from "./styled"
 import Footer from "../../components/Footer/Footer"
 import Seat from "../../components/Seat/Seat"
+import { useParams } from "react-router-dom"
+import { useState, useEffect } from "react"
+import axios from "axios"
+import { BASE_URL } from "../../constants/urls"
 
 export default function SeatsPage() {
+    const [session, setSession] = useState(undefined)
+    const {idSessao} = useParams()
+
+    useEffect(() => {
+      axios.get(`${BASE_URL}/showtimes/${idSessao}/seats`)
+        .then(res=>setSession(res.data))
+        .catch(err=>console.log(err.response.data))
+    }, [])
+    
+    console.log(session)
+
+    if (session === undefined) {
+        return <PageContainer>Carregando...</PageContainer>
+    }
 
     return (
         <PageContainer>
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-                <Seat>01</Seat>
-                <Seat>02</Seat>
-                <Seat>03</Seat>
-                <Seat>04</Seat>
-                <Seat>05</Seat>
+                {session.seats.map(s => (
+                <Seat key={s.id} seat={s}/>))}
             </SeatsContainer>
 
             <CaptionContainer>
@@ -41,7 +56,12 @@ export default function SeatsPage() {
                 <button>Reservar Assento(s)</button>
             </FormContainer>
 
-            <Footer />
+            <Footer
+                posterURL={session.movie.posterURL}
+                title={session.movie.title}
+                weekday={session.day.weekday}
+                hour={session.name}
+            />
 
         </PageContainer>
     )
