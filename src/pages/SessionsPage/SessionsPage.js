@@ -1,38 +1,36 @@
-import styled from "styled-components"
+import { PageContainer } from "./styled"
 import Footer from "../../components/Footer/Footer"
 import SessionCard from "../../components/SessionCard/SessionCard"
+import { useEffect, useState} from "react"
+import { useParams } from "react-router-dom"
+import { BASE_URL } from "../../constants/urls"
+import axios from "axios"
 
 export default function SessionsPage() {
+    const [movie, setMovie] = useState(undefined)
+    const { idFilme } = useParams()
+
+    useEffect(() => {
+        axios.get(`${BASE_URL}/movies/${idFilme}/showtimes`)
+            .then(res=>setMovie(res.data))
+            .catch(err=>console.log(err.response.data))
+    }, [])
+
+    if (movie === undefined) {
+        return <PageContainer>Carregando...</PageContainer>
+    }
+
+    console.log(movie)
 
     return (
-        <>
         <PageContainer>
             Selecione o horário
             <div>
-                <SessionCard />
-                <SessionCard />
-                <SessionCard />
-                <SessionCard />
+                {movie.days.map(s =>(
+                    <SessionCard session={s} key={s.id}/>
+                ))}
             </div>
+            <Footer posterURL={movie.posterURL} title={movie.title}/>
         </PageContainer>
-
-        <Footer />
-
-        </>
     )
 }
-
-const PageContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    font-family: 'Roboto';
-    font-size: 24px;
-    text-align: center;
-    color: #293845;
-    margin-top: 30px;
-    padding-bottom: 120px;
-    padding-top: 70px;
-    div {
-        margin-top: 20px;
-    }
-`
