@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { BASE_URL } from "../../constants/urls"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { testaCPF } from "./testaCpf"
 
 export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
     const [form, setForm] = useState({ name: "", cpf: "" })
@@ -11,7 +12,7 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (form.name && form.cpf && selectedSeats.length > 0) {
+        if (form.name && form.cpf && selectedSeats.length > 0 && testaCPF(form.cpf)) {
             setDisableButton(false)
         } else {
             setDisableButton(true)
@@ -42,9 +43,6 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
                     cpf: form.cpf,
                     seats: selectedSeats.map(s => s.name)
                 }
-                
-                console.log("info saindo do BuyerForm")
-                console.log(info)
 
                 setSuccessInfo(info)
 
@@ -53,13 +51,28 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
             .catch(err => alert(err.response.data.message))
     }
 
+    function handleKeyDownLetras(event) {
+        if (event.keyCode >= 48 && event.keyCode <= 57) {
+            event.preventDefault();
+        }
+    }
+
+    function handleKeyDownNumeros(event) {
+        if (event.keyCode >= 65 && event.keyCode <= 90) {
+            event.preventDefault();
+        }
+    }
+
     return (
         <FormContainer onSubmit={buyTicket}>
             <label htmlFor="name">Nome do Comprador:</label>
             <input 
                 id="name" 
                 placeholder="Digite seu nome..."
+                type="text"
                 name="name"
+                onKeyDown={handleKeyDownLetras}
+                pattern="[a-zA-Z .-']+"
                 value={form.name} 
                 onChange={handleForm}
                 required
@@ -69,6 +82,11 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
             <input 
                 id="cpf" 
                 placeholder="Digite seu CPF..."
+                type="text"
+                minLength="11"
+                maxLength="11"
+                onKeyDown={handleKeyDownNumeros}
+                pattern="[0-9]+"
                 name="cpf"
                 value={form.cpf}
                 onChange={handleForm}

@@ -1,16 +1,8 @@
 import { PageContainer, TextContainer } from "./styled"
 import { Link } from "react-router-dom"
-import { useEffect } from "react";
 
 export default function SuccessPage({ successInfo }) {
     const { movie, date, hour, buyer, cpf, seats } = successInfo;
-
-    useEffect(() => {
-        console.log("successInfo abaixo:")
-        console.log(successInfo)
-        console.log("movie : " + movie)    
-    }, [])
-    
 
     return (
         <PageContainer>
@@ -30,7 +22,11 @@ export default function SuccessPage({ successInfo }) {
             <TextContainer>
                 <strong><p>Comprador</p></strong>
                 <p>Nome: {buyer}</p>
-                <p>CPF: {cpf}</p>
+                <p>CPF: {cpf
+                            .replace(/(\d{3})(\d)/,"$1.$2")
+                            .replace(/(\d{3})(\d)/,"$1.$2")
+                            .replace(/(\d{3})(\d{1,2})$/,"$1-$2")
+                        }</p>
             </TextContainer>
 
             <Link to="/">

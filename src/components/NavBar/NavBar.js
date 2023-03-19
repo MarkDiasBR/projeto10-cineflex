@@ -8,8 +8,6 @@ export default function NavBar() {
 
     let location = useLocation()
 
-    console.log(location)
-
     return (
         <NavContainer>
             {location.pathname !== "/" && <IonIcon icon={arrowBackCircleOutline} onClick={() => navigate(-1)}></IonIcon>}
