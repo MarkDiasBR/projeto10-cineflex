@@ -20,6 +20,9 @@ export default function SessionsPage() {
         return <PageContainer>Carregando...</PageContainer>
     }
     
+    console.log("movie")
+    console.log(movie)
+
     return (
         <PageContainer>
             Selecione o horário

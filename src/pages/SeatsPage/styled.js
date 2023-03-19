@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { seatColors } from "../../constants/colors"
 
 export const PageContainer = styled.div`
     display: flex;
@@ -21,7 +22,7 @@ export const SeatsContainer = styled.div`
     justify-content: center;
     margin-top: 20px;
 `
-export const FormContainer = styled.div`
+export const FormContainer = styled.form`
     width: calc(100vw - 40px); 
     display: flex;
     flex-direction: column;
@@ -43,8 +44,8 @@ export const CaptionContainer = styled.div`
     margin: 20px;
 `
 export const CaptionCircle = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border: 1px solid ${(props) => seatColors[props.status].border};
+    background-color: ${(props) => seatColors[props.status].background};
     height: 25px;
     width: 25px;
     border-radius: 25px;

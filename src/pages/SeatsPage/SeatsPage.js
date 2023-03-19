@@ -1,4 +1,6 @@
-import { PageContainer, SeatsContainer, CaptionContainer, CaptionItem, CaptionCircle, FormContainer } from "./styled"
+import { PageContainer, SeatsContainer } from "./styled"
+import Caption from "./Caption"
+import BuyerForm from "./BuyerForm"
 import Footer from "../../components/Footer/Footer"
 import Seat from "../../components/Seat/Seat"
 import { useParams } from "react-router-dom"
@@ -6,8 +8,9 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { BASE_URL } from "../../constants/urls"
 
-export default function SeatsPage() {
+export default function SeatsPage({ setSuccessInfo }) {
     const [session, setSession] = useState(undefined)
+    const [selectedSeats, setSelectedSeats] = useState([])
     const {idSessao} = useParams()
 
     useEffect(() => {
@@ -22,39 +25,55 @@ export default function SeatsPage() {
         return <PageContainer>Carregando...</PageContainer>
     }
 
+    function handleSeat (seat) {
+        if (!seat.isAvailable) {
+            alert("Esse assento não está disponível")
+        } else {
+
+            //Verifica o estado (array) selectedSeats contém o assento (seat)
+            //salva esse booleano na variável isSelected
+            const isSelected = selectedSeats.some((s) => s.id === seat.id)
+            
+            //Se o seat está contido em selectedSeats
+            if (isSelected) { 
+                
+                //Remove na lista de selecionados
+                const newList = selectedSeats.filter((s) => s.id !== seat.id)
+                setSelectedSeats(newList)
+            
+            //Se o seat não está contido em selectedSeats
+            } else { 
+                
+                //Adiciona na lista de selecionados
+                const newList2 = [...selectedSeats, seat]
+                setSelectedSeats(newList2)
+            }
+        }
+    }
+
     return (
         <PageContainer>
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-                {session.seats.map(s => (
-                <Seat key={s.id} seat={s}/>))}
+                {session.seats.map(seat => (
+                <Seat 
+                    key={seat.id}
+                    seat={seat}
+                    handleSeat={() => handleSeat(seat)}
+                    isSelected={selectedSeats.some((s) => s.id === seat.id)}
+                />
+                ))}
+
             </SeatsContainer>
+            
+            <Caption />
 
-            <CaptionContainer>
-                <CaptionItem>
-                    <CaptionCircle />
-                    Selecionado
-                </CaptionItem>
-                <CaptionItem>
-                    <CaptionCircle />
-                    Disponível
-                </CaptionItem>
-                <CaptionItem>
-                    <CaptionCircle />
-                    Indisponível
-                </CaptionItem>
-            </CaptionContainer>
-
-            <FormContainer>
-                Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
-
-                CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
-
-                <button>Reservar Assento(s)</button>
-            </FormContainer>
+            <BuyerForm 
+                selectedSeats={selectedSeats}
+                setSuccessInfo={setSuccessInfo}
+                session={session}
+            />
 
             <Footer
                 posterURL={session.movie.posterURL}

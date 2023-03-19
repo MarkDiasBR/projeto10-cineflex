@@ -17,6 +17,8 @@ export default function HomePage() {
     if (movies === undefined) {
         return <PageContainer>Carregando...</PageContainer>
     }
+    console.log("movies")
+    console.log(movies)
 
     return (
         <PageContainer>

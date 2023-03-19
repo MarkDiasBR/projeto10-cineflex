@@ -1,8 +1,9 @@
+import { seatColors } from "../../constants/colors";
 import styled from "styled-components";
 
 export const SeatItem = styled.div`
-border: 1px solid blue;         // Essa cor deve mudar
-background-color: lightblue;    // Essa cor deve mudar
+border: 1px solid ${props=>seatColors[props.status].border};
+background-color: ${props=>seatColors[props.status].background};
 height: 25px;
 width: 25px;
 border-radius: 25px;
