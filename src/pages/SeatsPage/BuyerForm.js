@@ -28,9 +28,8 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
     function buyTicket(e) {
         e.preventDefault()
 
-
+        console.log("console.log do form no inicio da função buyTicket, no onsubmit do form")
         console.log(form)
-        {/*
 
         const arraySelectedSeats = selectedSeats.map(s => s.id)        
         const newForm = {...form, ids: arraySelectedSeats} 
@@ -52,7 +51,7 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
 
                 navigate("/sucesso")
             })
-        .catch(err => alert(err.response.data.message)) */}
+        .catch(err => alert(err.response.data.message))
     }
 
     function handleKeyDownLetras(event) {
@@ -70,9 +69,9 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
     return (
         <FormContainer onSubmit={buyTicket}>
             {selectedSeats.map(seat => (
-                <>
-                    <label htmlFor="name" key={`a${seat.id}`}>Nome do Comprador:</label>
-                    <input key={`b${seat.id}`}
+                <div>
+                    <label htmlFor="name">Nome do Comprador {seat.name}:</label>
+                    <input
                         id="name" 
                         placeholder="Digite seu nome..."
                         type="text"
@@ -84,8 +83,8 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
                         required
                     />
 
-                    <label htmlFor="cpf" key={`c${seat.id}`}>CPF do Comprador:</label>
-                    <input key={`d${seat.id}`}
+                    <label htmlFor="cpf">CPF do Comprador {seat.name}:</label>
+                    <input
                         id="cpf" 
                         placeholder="Digite seu CPF..."
                         type="text"
@@ -98,7 +97,7 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
                         onChange={handleForm}
                         required
                     />
-                </>
+                </div>
             ))}
 
 
