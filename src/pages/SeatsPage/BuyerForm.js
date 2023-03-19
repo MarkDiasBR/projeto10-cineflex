@@ -65,33 +65,38 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
 
     return (
         <FormContainer onSubmit={buyTicket}>
-            <label htmlFor="name">Nome do Comprador:</label>
-            <input 
-                id="name" 
-                placeholder="Digite seu nome..."
-                type="text"
-                name="name"
-                onKeyDown={handleKeyDownLetras}
-                pattern="[a-zA-Z .-']+"
-                value={form.name} 
-                onChange={handleForm}
-                required
-            />
+            {selectedSeats.map(seat => (
+                <>
+                    <label htmlFor="name">Nome do Comprador:</label>
+                    <input 
+                        id="name" 
+                        placeholder="Digite seu nome..."
+                        type="text"
+                        name="name"
+                        onKeyDown={handleKeyDownLetras}
+                        pattern="[a-zA-Z .-']+"
+                        value={form.name} 
+                        onChange={handleForm}
+                        required
+                    />
 
-            <label htmlFor="cpf">CPF do Comprador:</label>
-            <input 
-                id="cpf" 
-                placeholder="Digite seu CPF..."
-                type="text"
-                minLength="11"
-                maxLength="11"
-                onKeyDown={handleKeyDownNumeros}
-                pattern="[0-9]+"
-                name="cpf"
-                value={form.cpf}
-                onChange={handleForm}
-                required
-            />
+                    <label htmlFor="cpf">CPF do Comprador:</label>
+                    <input 
+                        id="cpf" 
+                        placeholder="Digite seu CPF..."
+                        type="text"
+                        minLength="11"
+                        maxLength="11"
+                        onKeyDown={handleKeyDownNumeros}
+                        pattern="[0-9]+"
+                        name="cpf"
+                        value={form.cpf}
+                        onChange={handleForm}
+                        required
+                    />
+                </>
+            ))}
+
 
             <button type="submit" disabled={disableButton}>Reservar Assento(s)</button>
         </FormContainer>
