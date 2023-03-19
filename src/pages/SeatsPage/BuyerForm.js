@@ -28,6 +28,10 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
     function buyTicket(e) {
         e.preventDefault()
 
+
+        console.log(form)
+        {/*
+
         const arraySelectedSeats = selectedSeats.map(s => s.id)        
         const newForm = {...form, ids: arraySelectedSeats} 
 
@@ -48,7 +52,7 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
 
                 navigate("/sucesso")
             })
-            .catch(err => alert(err.response.data.message))
+        .catch(err => alert(err.response.data.message)) */}
     }
 
     function handleKeyDownLetras(event) {
@@ -67,21 +71,21 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
         <FormContainer onSubmit={buyTicket}>
             {selectedSeats.map(seat => (
                 <>
-                    <label htmlFor="name">Nome do Comprador:</label>
-                    <input 
+                    <label htmlFor="name" key={`a${seat.id}`}>Nome do Comprador:</label>
+                    <input key={`b${seat.id}`}
                         id="name" 
                         placeholder="Digite seu nome..."
                         type="text"
-                        name="name"
                         onKeyDown={handleKeyDownLetras}
                         pattern="[a-zA-Z .-']+"
-                        value={form.name} 
+                        name={`name${seat.name}`}
+                        value={form[`name${seat.name}`]} 
                         onChange={handleForm}
                         required
                     />
 
-                    <label htmlFor="cpf">CPF do Comprador:</label>
-                    <input 
+                    <label htmlFor="cpf" key={`c${seat.id}`}>CPF do Comprador:</label>
+                    <input key={`d${seat.id}`}
                         id="cpf" 
                         placeholder="Digite seu CPF..."
                         type="text"
@@ -89,8 +93,8 @@ export default function BuyerForm ({ selectedSeats, setSuccessInfo, session }) {
                         maxLength="11"
                         onKeyDown={handleKeyDownNumeros}
                         pattern="[0-9]+"
-                        name="cpf"
-                        value={form.cpf}
+                        name={`cpf${seat.name}`}
+                        value={form[`cpf${seat.name}`]}
                         onChange={handleForm}
                         required
                     />
